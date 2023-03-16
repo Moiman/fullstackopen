@@ -6,26 +6,31 @@ const Button = ({ handleClick, text }) => {
   )
 }
 
-const StatisticLine = ({ text, value }) => <p>{text} {value}</p>
+const StatisticLine = ({ text, value }) => (
+  <tr>
+    <td>{text}</td>
+    <td>{value}</td>
+  </tr>
+)
 
 const Statistics = ({ good, neutral, bad }) => {
   const all = good + neutral + bad
   if (all === 0) {
     return (
-      <div>
-        <p>Palautetta ei ole annettu</p>
-      </div>
+      <p>Palautetta ei ole annettu</p>
     )
   }
   return (
-    <div>
-      <StatisticLine text='hyvä' value={good} />
-      <StatisticLine text='neutraali' value={neutral} />
-      <StatisticLine text='huono' value={bad} />
-      <StatisticLine text='kaikki' value={all} />
-      <StatisticLine text='keskiarvo' value={(good - bad) / (all)} />
-      <StatisticLine text='positiivinen' value={100 * good / (all) + ' %'} />
-    </div>
+    <table>
+      <tbody>
+        <StatisticLine text='hyvä' value={good} />
+        <StatisticLine text='neutraali' value={neutral} />
+        <StatisticLine text='huono' value={bad} />
+        <StatisticLine text='kaikki' value={all} />
+        <StatisticLine text='keskiarvo' value={(good - bad) / (all)} />
+        <StatisticLine text='positiivinen' value={100 * good / (all) + ' %'} />
+      </tbody>
+    </table>
   )
 }
 
