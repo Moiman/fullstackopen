@@ -2,6 +2,14 @@ import { useState } from 'react';
 
 const Statistics = ({ good, neutral, bad }) => {
   const all = good + neutral + bad
+  if (all === 0) {
+    return (
+      <div>
+        <h2>tilastot</h2>
+        <p>Palautetta ei ole annettu</p>
+      </div>
+    )
+  }
   return (
     <div>
       <h2>tilastot</h2>
