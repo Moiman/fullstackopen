@@ -1,51 +1,25 @@
 import { useEffect, useState } from 'react'
 import personService from './services/persons'
+import Notification from './components/Notification'
+import Filter from './components/Filter'
+import Persons from './components/Persons'
+import PersonForm from './components/PersonForm'
 
-const Filter = ({ newFilter, handleFilterChange }) => {
-  return (
-    <div>
-      filter shown with <input value={newFilter} onChange={handleFilterChange} />
-    </div>
-  )
-}
 
-const PersonForm = ({ addPerson, newName, newNumber, handlePersonChange, handleNumberChange }) => {
-  return (
-    <form onSubmit={addPerson}>
-      <div>
-        name: <input value={newName} onChange={handlePersonChange} />
-      </div>
-      <div>
-        number: <input value={newNumber} onChange={handleNumberChange} />
-      </div>
-      <div>
-        <button type="submit">add</button>
-      </div>
-    </form>
-  )
-}
-
-const Persons = ({ persons, newFilter, deletePerson }) => {
-  return (
-    <div>
-      {persons.filter(
-        (p) => p.name.toLowerCase().includes(newFilter.toLowerCase())
-      ).map((p) =>
-        <div key={p.name}>
-          {p.name} {p.number}
-          <button onClick={() => deletePerson(p)}>delete</button>
-        </div>
-      )
-      }
-    </div >
-  )
-}
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+  const [message, setMessage] = useState(null)
+
+  const showMessage = (message) => {
+    setMessage(message)
+    setTimeout(() => {
+      setMessage(null)
+    }, 3000)
+  }
 
   useEffect(() => {
     personService
@@ -74,6 +48,7 @@ const App = () => {
           setPersons(persons.map(p => p.id !== oldPerson.id ? p : returnedPerson))
           setNewName('')
           setNewNumber('')
+          showMessage(`Updated ${returnedPerson.name}`)
         })
     } else {
       personService
@@ -82,6 +57,7 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
+          showMessage(`Added ${returnedPerson.name}`)
         })
     }
   }
@@ -94,6 +70,7 @@ const App = () => {
       .remove(id)
       .then(() => {
         setPersons(persons.filter(p => p.id !== id))
+        showMessage(`Deleted ${person.name}`)
       })
   }
 
@@ -112,6 +89,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter newFilter={newFilter} handleFilterChange={handleFilterChange} />
       <h3>add a new</h3>
       <PersonForm
