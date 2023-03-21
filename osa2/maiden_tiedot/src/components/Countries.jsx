@@ -1,4 +1,4 @@
-const Countries = ({ countries, name }) => {
+const Countries = ({ countries, name, setName }) => {
   if (name === '')
     return
   const matches = countries.filter(c => c.name.common.toLowerCase().includes(name.toLowerCase()))
@@ -25,6 +25,7 @@ const Countries = ({ countries, name }) => {
         {matches.map(c => (
           <div key={c.name.common}>
             {c.name.common}
+            <button onClick={() => setName(c.name.common)}>show</button>
           </div>)
         )}
       </div>

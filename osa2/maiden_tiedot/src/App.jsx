@@ -22,7 +22,7 @@ function App() {
     <div>
       find countries
       <input onChange={handleChange} />
-      <Countries countries={countries} name={name} />
+      <Countries countries={countries} name={name} setName={setName} />
     </div>
   )
 }
